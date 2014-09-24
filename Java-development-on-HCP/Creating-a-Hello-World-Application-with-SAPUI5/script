@@ -1,0 +1,103 @@
+Creating a Hello World Application with SAPUI5
+Introduction
+ 
+
+In this tutorial, we’ll learn how to create a Hello World type application using the SAPUI5 JavaScript toolset.
+Using the tools SAPUI5 provides you create application projects and views according to the Model View Controller concept with a clear separation between the user interface and the controller logic.
+
+XML, JSON and HTML development paradigms are also supported.
+The prerequisites for this tutorial are that you have the Eclipse IDE the SAP HANA Cloud Platform Tools installed. If this has not yet been done, please see the earlier tutorials that address these points.
+
+
+
+
+Create Project in Eclipse
+ 
+
+Open the Eclipse IDE, 
+1.	then to open the wizard for creating an SAPUI5 application, choose   File   New   Other...   SAPUI5 Application Development   Application Project 
+2.	In the Library section, for a desktop app select ‘sap.ui.commons’ or for a mobile app, select ‘sap.m’
+3.	Specify the name and location for your project. Select the checkbox for Create an initial View .
+4.	In the next wizard step:
+a.	Enter a name for the initial view in the Name field, e. g. helloworld. Don't add a file extension, this is done automatically based on the development paradigm.
+b.	Choose JavaScript as Development Paradigm and finish the wizard.
+If you want to use XML or JSON, just proceed accordingly.
+
+
+
+ 
+
+As you can see, a new dynamic web project is created. All relevant files are created in the WebContent folder.
+The web project contains an HTML index file, a controller javascript file and a javascript view in addition to the jar files that are required for the java application.
+
+The prefilled index.html contains the sap.ui.commons lib and sap_bluecrystal theme in the boostrap in case of a desktop target device and the sap.m lib and sap_mvi theme in case of mobile target device.
+In WEB-INF folder a web.xml file is created which contains settings for resource handling and the use of SimpleProxyServlet.
+The installed SAPUI5 UI lib plugins are automatically added to the Java build path and added to the deployment assembly.
+The SAPUI5 class path container (if available) is automatically added to the JavaScript include path.
+Opening the index.html  in the standard editor, you will see the coding to call the view is added to between script tags.
+
+An automatic switch to the J2EE perspective is performed.
+
+
+ 
+
+Inside the JavaScript block of index.html and the js files, code completion is available.
+By hitting <cntrl>+space code completion and suggestion templates are presented. 
+
+
+ 
+
+The purpose of this simple app is to add a button to the main screen which fires an event to a listener. The listener will open a simple alert dialog on receipt of the event.
+So now, let’s add the code to do that.
+If you look into the js view, you will see a create content section, this is a where the UI is constructed. So let’s add the button here.
+We create an empty array that will contain the controls, in this case a button.
+Then create the button with an id ‘MyButton’ and label text ‘Hello World’.
+Then we tell the button what method is called when the button is pressed – in this case, the ‘doIt’ method in the js controller and place it in the empty array.
+Finally, we return the array with the button.
+Next To implement the doIt method for the button's press event, insert the following coding into the controller (in this example: myapp.controller.js)
+
+
+Test App
+ 
+ 
+
+Now we can see the application in action. Let’s first test the app on the Tomcat server running on the local machine.
+To create the Tomcat server, right click on the project, select ‘run as’ -> ‘run on server’.
+In the dialog popup, select the ‘Manually define a server’ radio then the ‘Java Web Tomcat Server’.
+In the next tab, we can see that the hello world app has already been selected for configuration. Clicking ‘Finish’ will run the web app on Tomcat.
+This will load the application in a browser window in Eclipse.
+Click the ‘Hello World’ button to ensure it does what it is supposed to.
+
+
+ 
+Next, we can test the app on the Hana Cloud Platform. Repeat the process we used with the Tomcat Server only this time select SAP HANA Cloud Platform as the server type. Note that the landscape host is ‘hanatrial.ondemand.com’ or the trial version.
+Give the application a name – in this case ‘myapp’ and complete you HCP account name, user name and password. If you want to avoid re-entering the password, select the ‘Save Password’ checkbox.
+Eclipse will now send the app to the HCP. This may take some time as all the supporting libraries must be uploaded in addition to the core app.
+
+
+ 
+
+If you logon to the HANA Cloud Platform cockpit, you should be able to see the status of your java instance as it is uploaded. In the Content section on the left, select ‘Java Applications’. This will present a list of your current applications. As you can see, ‘myapp’ has been installed. In the actions section, you can stop, start or delete the app.
+
+
+ 
+
+Finally, let’s return to Eclipse and look at manually deploying the app using the Console Client. To deploy the app with the console, we need to export the app and all relevant items as a ‘war’ file.
+Right click the helloworld app and select ‘export’. From the popup, select ‘WAR file’ from the ‘WEB’ node. Make sure the web project dropdown is showing ‘helloworld’ and enter a name and folder destination for the war file.
+
+Deploy with the Console
+ 
+
+To use the console, we need to locate the neo.bat’ file and run from either a command line prompt or using a script or batch file. Neo.bat is located in the tools subdirectory for the SDK download. In this very basic batch file, the full path is entered followed by the deploy command and then the properties file containing the deployment details.
+The deployment properties file can be based on the existing sample properties file called ‘template.properties’. This is located in the tools/samples/deploy_update_site sub folder of the SDK download. Here the file has been edited to hold the correct account and application names, the user and landscape URL.
+Further down, the source property contains the full path of the WAR file that has just been created in Eclipse. 
+To install the app, open a command window, cd to the directory containing the batch file and type the name of the batch file into the window. In this case, it is ‘upload’.
+Enter your password.
+The console will now install the app onto HCP. Do remember that this may take some time.
+
+That ends this tutorial, to view other tutorials and videos, please go to the SAP Hana Academy Section on youtube.
+
+
+
+
+
