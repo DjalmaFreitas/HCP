@@ -1,0 +1,112 @@
+Creating Connectivity Enabled Applications and HTTP Destinations
+Introduction
+ 
+
+In this tutorial, we’ll learn how to consume Internet services using the Apache HTTP Client. The tutorial also shows how a connectivity-enabled Web application can be deployed on a local server and on the cloud.
+Additionally, we’ll look at ways of creating new destinations.
+The prerequisites for this tutorial are that you have the Eclipse IDE the SAP HANA Cloud Platform Tools installed. If this has not yet been done, please see the earlier tutorials that address these points.
+Please note that the Java Web Tomcat 7 (Beta) runtime does not support the connectivity service.
+
+
+Eclipse
+ 
+
+Now, let’s open Eclipse. We are going to create a connectivity enabled web  application that loads an external web page.
+1.	From the file menu, choose   New   Dynamic Web Project 
+2.	In the Project name field, enter ConnectivityHelloWorld .
+3.	In the Target Runtime pane, select the runtime you want to use to deploy the application. In this tutorial, we choose Java Web.
+4.	In the Configuration pane, leave the default configuration.
+5.	Choose Finish to finalize the creation of your project.
+
+Create Servlet
+ 
+
+Now lets add the servlet that will be used to drive the process.
+1.	From the ConnectivityHelloWorld context menu, choose   New   Servlet 
+2.	Enter hello as the Java package and ConnectivityServlet as the Class name and choose Next.
+3.	In the URL mappings field, select /ConnectivityServlet and choose Edit.
+4.	In the Pattern field, replace the current value with just "/". In this way, the servlet will be mapped as a welcome page for the application.
+
+
+WEB.XML
+ 
+
+So that the app knows the name of the destination, we need to update the web.xml file that defines how the application is deployed.
+1.	Go to   ConnectivityHelloWorld   WebContent   WEB-INF  and open the web.xml file.
+2.	Add the following code block to the <web-app> element:
+<resource-ref>
+      <res-ref-name>outbound-internet-destination</res-ref-name>
+      <res-type>com.sap.core.connectivity.api.http.HttpDestination</res-type>
+</resource-ref>
+
+NoteThe value of the <res-ref-name> element in the web.xml file should match the name of the destination that you want to be retrieved at runtime. In this case, the destination name is outbound-internet-destination.
+
+
+
+Servlet Code
+ 
+Returning to the servlet, I’m going to replace the generated code with code that will make use of the destination api.
+Let’s take a look at what this code is doing.
+As you can see, the doGet method is employed to pick up an HTTP Get call.
+The first task is to check if there is a parameter called ‘destname’. If that is found, the destname parameter will be used for the lookup. If not, then  "outbound-internet-destination" is used.
+Call the servlet with a URL in this format to change the destination name
+For example, use a parameter destname=my-destination to use a destination called my-destination.
+We get the JNDI context and then load the destination using either the name defined in the parameter or the default.
+Once we have the destination, we create an HTTP Client and execute this as an HTTP Get. If the return is not status code 200 or HTTP_OK, an exception is thrown and the process aborted.
+Assuming the status is good, we can read the input stream from the destination and place it on the servlet response output stream. This should present the destination web page to the user.
+The catch statements should pick up the errors and place the message in the logger.
+The Finally statement will ensure that the connection manager is shut down and de-allocate all system resources.
+
+
+
+Test Deployment
+ 
+
+We can test the connectivity web application locally on the Java Web Server which we will now create.
+1.	In the context menu of the Servers view, choose   New   Server 
+2.	Expand the SAP node, select Java Web Server and choose Finish.
+3.	A new server Java Web Server [Stopped, Synchronized] appears on the Servers tab page.
+Also, a Servers folder is created and appears in the navigation tree of the IDE. It contains configurable folders and files you can use, for example, to change your HTTP or JMX ports.
+4.	If you work behind a proxy server, you need to configure your proxy setting as follows:
+o	In the Servers view, double-click the added server to open the editor.
+o	Click the Open Launch Configuration link.
+o	Choose the (x)=Arguments tab page.
+o	In the VM Arguments box, add the following row:
+o	-Dhttp.proxyHost=<your_proxy_host> -Dhttp.proxyPort=<your_proxy_port> -Dhttps.proxyHost=<your_proxy_host> -Dhttps.proxyPort=<your_proxy_port>
+o	Choose OK.
+
+
+
+ 
+
+To configure the destination, go to the Connectivity tab page of your local server, create a destination with the name outbound-internet-destination.
+For the sample destination to work properly, the following properties need to be configured:
+Name=outbound-internet-destination
+Type=HTTP
+URL=http://www.google.com/index.html
+Authentication=NoAuthentication
+1.	From the ConnectivityServlet.java editor's context menu, choose   Run As   Run on Server 
+2.	Make sure that the Choose an existing server option is selected and choose Java Web Server.
+3.	Choose Finish.
+The server is now started, displayed as Java Web Server [Started, Synchronized] in the Servers view.
+
+
+Debug Servlet
+ 
+
+If you are unfamiliar with Eclipse, you can also run this process in a debugger to see exactly what happens to the servlet as it runs through its lifecycle.
+To stop servlet execution at a breakpoint, open the connectivityServlet and double click in the left margin. This will halt servlet execution at this point in the code. 
+From the servlet context menu, rather than selecting run as select ‘debug’
+
+Cloud Deployment
+ 
+Next, we will deploy the app on the Hana Cloud Platform. Repeat the process we used with the Tomcat Server only this time select SAP HANA Cloud Platform as the server type. Note that the landscape host is ‘hanatrial.ondemand.com’ or the trial version.
+Give the application a name – in this case ‘connectivity’ and complete you HCP account name, user name and password. If you want to avoid re-entering the password, select the ‘Save Password’ checkbox.
+
+
+
+
+
+
+
+
