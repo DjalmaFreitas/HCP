@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  
+	<resource-ref>
+		<res-ref-name>EcmService</res-ref-name>
+		<res-type>com.sap.ecm.api.EcmService</res-type>
+	</resource-ref>
+	
+	
+  <login-config>
+    <auth-method>FORM</auth-method>
+  </login-config>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Protected Area</web-resource-name>
+      <url-pattern>/index.jsp</url-pattern>
+      <url-pattern>/a2asso.jsp</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Everyone</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-role>
+    <description>All SAP HANA Cloud Platform users</description>
+    <role-name>Everyone</role-name>
+  </security-role>
+  <display-name>HelloWorld</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>MailServlet</display-name>
+    <servlet-name>MailServlet</servlet-name>
+    <servlet-class>com.sap.cloud.sample.mail.MailServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MailServlet</servlet-name>
+    <url-pattern>/MailServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>HelloWorldServlet</display-name>
+    <servlet-name>HelloWorldServlet</servlet-name>
+    <servlet-class>hello.HelloWorldServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HelloWorldServlet</servlet-name>
+    <url-pattern>/HelloWorldServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Test</display-name>
+    <servlet-name>Test</servlet-name>
+    <servlet-class>hello.Test</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Test</servlet-name>
+    <url-pattern>/Test</url-pattern>
+  </servlet-mapping>
+</web-app>
