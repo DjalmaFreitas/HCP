@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <resource-ref>
+    <res-ref-name>backend-no-auth-destination</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.http.HttpDestination</res-type>
+  </resource-ref>
+   <resource-ref>
+    <res-ref-name>backend-basic-auth-destination</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.http.HttpDestination</res-type>
+  </resource-ref>
+  <resource-ref>
+    <res-ref-name>connectivity/DestinationFactory</res-ref-name>
+    <res-type>com.sap.core.connectivity.api.DestinationFactory</res-type>
+  </resource-ref>
+  <display-name>ConnectivityHelloWorld</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>ConnectivityServlet</display-name>
+    <servlet-name>ConnectivityServlet</servlet-name>
+    <servlet-class>hello.ConnectivityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ConnectivityServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>
